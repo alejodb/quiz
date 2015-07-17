@@ -1,28 +1,52 @@
 body {
-  background: #999;
+  background: #fff;
+}
+
+#page-wrap {
+  background-color: #fff;
+}
+
+#page-wrap > .main {
+  border: 0px;
+  padding: 10px;
+  margin-bottom: 0px;
+  color: black;
 }
 
 #page-wrap:after {
   content: "Wide Layout";
+  font-size: 16px;
+  color: #999;
+}
+
+header  {
+  padding: 20px;
+  text-align: center;
 }
 
 nav {
   float: left;
-  width: 15%;
-  height: 200px;
+  width: 150px;
+  padding: 20px;
+  min-height: 300px;
 }
 
 nav span {
-  margin: 0px 100px 0px 0px;
+  margin: 5px 0px 0px 0px;
+  display: block;
 }
 
 section {
-  float: right;
-  width: 80%;
-  height: 200px;
+  float: left;
+  padding: 20px;
+  min-height: 300px;
+  text-align: left;
+  background-color: #fff;
 }
 
 footer {
   clear: both;
   display: block;
+  padding: 20px;
+  background-color: #eee;
 }

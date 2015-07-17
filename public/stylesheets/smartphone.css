@@ -1,9 +1,10 @@
 body {
-  background: #333;
+  background: #999;
 }
 
 #page-wrap:after {
   content: "Smartphone Layout";
+  font-size: 16px;
 }
 
 h2 span, section h3 {
@@ -12,6 +13,14 @@ h2 span, section h3 {
 
 body {
   font-size: xx-large;
+}
+
+section {
+  background-color: #fff;
+}
+
+footer {
+  background-color: #eee;
 }
 
 footer, input {
