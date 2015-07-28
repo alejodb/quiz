@@ -15,5 +15,5 @@ exports.answer = function (req, res) {
     } else {
       res.render('quizes/answer', {respuesta: 'Incorrecto'});
     }
-  })  
+  })
 };
