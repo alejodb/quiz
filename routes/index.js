@@ -12,6 +12,9 @@ router.get('/author', function(req, res) {
   res.render('author', { nombre: 'Alejandro', foto: '/images/bart2.gif' });
 });
 
+// Autoload de comandos con :quizId
+router.param('quizId', quizController.load);
+
 // Definición de rutas de /quizes
 router.get('/quizes', quizController.index);
 router.get('/quizes/:quizId(\\d+)', quizController.show);
