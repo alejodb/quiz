@@ -56,8 +56,7 @@ exports.new = function(req, res) {
 // POST /quizes/create
 exports.create = function(req, res) {
   var quiz = models.Quiz.build( req.body.quiz );
-
-  errors = quiz.validate();
+  var errors = quiz.validate();
     if (errors) {
       console.log(errors);
         res.render('quizes/new', {quiz: quiz, errors: errors});
@@ -68,4 +67,29 @@ exports.create = function(req, res) {
             res.redirect('/quizes');
           })
       }
+};
+
+// GET /quizes/:id/edit
+exports.edit = function(req, res) {
+  var quiz = req.quiz; // autoload de instancia de quiz
+  res.render('quizes/edit', {quiz: quiz, errors: null});
+};
+
+
+// PUT /quizes/:id
+exports.update = function(req, res) {
+  req.quiz.pregunta = req.body.quiz.pregunta;
+  req.quiz.respuesta = req.body.quiz.respuesta;
+
+  var errors = req.quiz.validate();
+  if (errors) {
+    console.log(errors);
+      res.render('quizes/edit', {quiz: req.quiz, errors: errors});
+    } else {
+      // guarda en BD los campos pregunta y respuesta de quiz
+      req.quiz.save({fields: ["pregunta", "respuesta"]}).then(
+        function() {
+          res.redirect('/quizes');
+        })
+    }
 };
