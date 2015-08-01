@@ -24,19 +24,47 @@ var sequelize = new Sequelize(DB_name, user, pwd,
                     );
 
 var Quiz = sequelize.import(path.join(__dirname, 'quiz'));
+var Tema = sequelize.import(path.join(__dirname, 'tema'));
+
+//Tema.hasMany(Quiz, { foreignKey: 'tema', allowNull: false });
+//Quiz.belongsTo(Tema, { as: 'tema', constraints: false });
 
 exports.Quiz = Quiz;
+exports.Tema = Tema;
 
-sequelize.sync().then(function() {
+sequelize.sync({force: true}).then(function() {
+  Tema.count().then(function (count){
+    if(count === 0) {
+      Tema.create({ codigo: 'otro',
+                    nombre: 'Otro'
+                  });
+      Tema.create({ codigo: 'humanidades',
+                    nombre: 'Humanidades'
+                  });
+      Tema.create({ codigo: 'ocio',
+                    nombre: 'Ocio'
+                  });
+      Tema.create({ codigo: 'ciencia',
+                    nombre: 'Ciencia'
+                  });
+      Tema.create({ codigo: 'tecnologia',
+                    nombre: 'Tecnologia'
+                  })
+          .then(function(){console.log('Tabla Tema inicializada')});
+    };
+  });
+
   Quiz.count().then(function (count){
     if(count === 0) {
       Quiz.create({ pregunta: 'Capital de Italia',
-                    respuesta: 'Roma'
+                    respuesta: 'Roma',
+                    tema: 'otro'
                   });
       Quiz.create({ pregunta: 'Capital de Portugal',
-                    respuesta: 'Lisboa'
+                    respuesta: 'Lisboa',
+                    tema: 'otro'
                   })
-          .then(function(){console.log('Base de datos inicializada')});
+          .then(function(){console.log('Tabla Quiz inicializada')});
     };
   });
 });

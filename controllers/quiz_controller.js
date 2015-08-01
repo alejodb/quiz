@@ -20,7 +20,7 @@ exports.load = function(req, res, next, quizId) {
 
 // GET /quizes
 exports.index = function (req, res) {
-  models.Quiz.findAll().then(
+  models.Quiz.findAll(/*{ include: [models.Tema]}*/).then(
     function(quizes) {
       res.render('quizes/index.ejs', {quizes: quizes, errors: null});
     }
@@ -46,11 +46,18 @@ exports.answer = function (req, res) {
 
 // GET /quizes/new
 exports.new = function(req, res) {
-  var quiz = models.Quiz.build( // crea objeto quiz
-    {pregunta: "", respuesta: ""}
-  );
+  models.Tema.findAll().then(
+    function(temas) {
+      var quiz = models.Quiz.build( // crea objeto quiz
+        {pregunta: "", respuesta: "", tema: ""}
+      );
 
-  res.render('quizes/new', {quiz: quiz, errors: null});
+      res.render('quizes/new', {quiz: quiz, temas: temas, errors: null});
+    }
+  ).catch(
+    function(error) {
+      next(error);
+    });
 };
 
 // POST /quizes/create
@@ -62,7 +69,7 @@ exports.create = function(req, res) {
         res.render('quizes/new', {quiz: quiz, errors: errors});
       } else {
         // guarda en BD los campos pregunta y respuesta de quiz
-        quiz.save({fields: ["pregunta", "respuesta"]}).then(
+        quiz.save({fields: ["pregunta", "respuesta", "tema"]}).then(
           function() {
             res.redirect('/quizes');
           })
@@ -71,8 +78,15 @@ exports.create = function(req, res) {
 
 // GET /quizes/:id/edit
 exports.edit = function(req, res) {
-  var quiz = req.quiz; // autoload de instancia de quiz
-  res.render('quizes/edit', {quiz: quiz, errors: null});
+  models.Tema.findAll().then(
+    function(temas) {
+      var quiz = req.quiz; // autoload de instancia de quiz
+      res.render('quizes/edit', {quiz: quiz, temas: temas, errors: null});
+    }
+  ).catch(
+    function(error) {
+      next(error);
+    });
 };
 
 
@@ -80,6 +94,7 @@ exports.edit = function(req, res) {
 exports.update = function(req, res) {
   req.quiz.pregunta = req.body.quiz.pregunta;
   req.quiz.respuesta = req.body.quiz.respuesta;
+  req.quiz.tema = req.body.quiz.tema;
 
   var errors = req.quiz.validate();
   if (errors) {
@@ -87,7 +102,7 @@ exports.update = function(req, res) {
       res.render('quizes/edit', {quiz: req.quiz, errors: errors});
     } else {
       // guarda en BD los campos pregunta y respuesta de quiz
-      req.quiz.save({fields: ["pregunta", "respuesta"]}).then(
+      req.quiz.save({fields: ["pregunta", "respuesta", "tema"]}).then(
         function() {
           res.redirect('/quizes');
         })
