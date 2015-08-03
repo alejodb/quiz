@@ -24,12 +24,17 @@ var sequelize = new Sequelize(DB_name, user, pwd,
                     );
 
 var Quiz = sequelize.import(path.join(__dirname, 'quiz'));
+var Comment = sequelize.import(path.join(__dirname, 'comment'));
 var Tema = sequelize.import(path.join(__dirname, 'tema'));
+
+Comment.belongsTo(Quiz);
+Quiz.hasMany(Comment);
 
 //Tema.hasMany(Quiz, { foreignKey: 'tema', allowNull: false });
 //Quiz.belongsTo(Tema, { as: 'tema', constraints: false });
 
 exports.Quiz = Quiz;
+exports.Comment = Comment;
 exports.Tema = Tema;
 
 sequelize.sync({force: true}).then(function() {

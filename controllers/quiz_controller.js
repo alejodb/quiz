@@ -1,7 +1,10 @@
 var models = require('../models/models.js');
 
 exports.load = function(req, res, next, quizId) {
-  models.Quiz.find(quizId).then(
+  models.Quiz.find({
+      where: { id: Number(quizId) },
+      include: [{ model: models.Comment }]
+  }).then(
     function(quiz) {
       if(quiz) {
         req.quiz = quiz;
@@ -64,16 +67,16 @@ exports.new = function(req, res) {
 exports.create = function(req, res) {
   var quiz = models.Quiz.build( req.body.quiz );
   var errors = quiz.validate();
-    if (errors) {
-      console.log(errors);
-        res.render('quizes/new', {quiz: quiz, errors: errors});
-      } else {
-        // guarda en BD los campos pregunta y respuesta de quiz
-        quiz.save({fields: ["pregunta", "respuesta", "tema"]}).then(
-          function() {
-            res.redirect('/quizes');
-          })
+  if (errors) {
+    res.render('quizes/new', {quiz: quiz, errors: errors});
+  } else {
+    // guarda en BD los campos pregunta y respuesta de quiz
+    quiz.save({fields: ["pregunta", "respuesta", "tema"]}).then(
+      function() {
+        res.redirect('/quizes');
       }
+    );
+  }
 };
 
 // GET /quizes/:id/edit
@@ -98,7 +101,6 @@ exports.update = function(req, res) {
 
   var errors = req.quiz.validate();
   if (errors) {
-    console.log(errors);
       res.render('quizes/edit', {quiz: req.quiz, errors: errors});
     } else {
       // guarda en BD los campos pregunta y respuesta de quiz
