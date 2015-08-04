@@ -5,7 +5,7 @@ exports.loginRequired = function(req, res, next) {
   } else {
     res.redirect('/login');
   }
-}
+};
 
 // GET /login -- Formulario de login
 exports.new = function(req, res) {
