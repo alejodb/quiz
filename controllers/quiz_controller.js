@@ -23,9 +23,14 @@ exports.load = function(req, res, next, quizId) {
 
 // GET /quizes
 exports.index = function (req, res) {
-  models.Quiz.findAll(/*{ include: [models.Tema]}*/).then(
+  var filtroBusqueda = "%";
+  if(req.query["search"]) {
+    filtroBusqueda = "%" + req.query["search"].trim().replace(/\s/g, "%") + "%";
+  }
+  console.log(filtroBusqueda);
+  models.Quiz.findAll({where: ["pregunta like ?", filtroBusqueda], order: ["pregunta"]}).then(
     function(quizes) {
-      res.render('quizes/index.ejs', {quizes: quizes, errors: null});
+      res.render('quizes/index.ejs', {quizes: quizes, search: req.query["search"], errors: null});
     }
   ).catch(
     function(error) {
