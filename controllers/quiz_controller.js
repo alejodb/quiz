@@ -68,7 +68,13 @@ exports.create = function(req, res) {
   var quiz = models.Quiz.build( req.body.quiz );
   var errors = quiz.validate();
   if (errors) {
-    res.render('quizes/new', {quiz: quiz, errors: errors});
+    models.Tema.findAll().then(
+      function(temas) {
+        res.render('quizes/new', {quiz: quiz, temas: temas, errors: errors});
+      }).catch(
+        function(error) {
+          next(error);
+        });
   } else {
     // guarda en BD los campos pregunta y respuesta de quiz
     quiz.save({fields: ["pregunta", "respuesta", "tema"]}).then(
@@ -101,7 +107,13 @@ exports.update = function(req, res) {
 
   var errors = req.quiz.validate();
   if (errors) {
-      res.render('quizes/edit', {quiz: req.quiz, errors: errors});
+      models.Tema.findAll().then(
+        function(temas) {
+          res.render('quizes/edit', {quiz: req.quiz, temas: temas, errors: errors});
+        }).catch(
+          function(error) {
+            next(error);
+          });
     } else {
       // guarda en BD los campos pregunta y respuesta de quiz
       req.quiz.save({fields: ["pregunta", "respuesta", "tema"]}).then(
