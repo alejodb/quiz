@@ -10,7 +10,7 @@ exports.loginRequired = function(req, res, next) {
 // GET /login -- Formulario de login
 exports.new = function(req, res) {
   var errors = req.session.errors || null;
-  req.session.errors = {};
+  req.session.errors = null;
 
   res.render('sessions/new', {errors: errors});
 };
@@ -23,8 +23,6 @@ exports.create = function(req, res) {
   var userController = require('./user_controller');
   userController.autenticar(login, password, function(error, user) {
     if(error) {
-      console.log(error);
-      console.log(JSON.stringify(error));
       req.session.errors = {"login": [error]};
       res.redirect("/login");
       return;
