@@ -14,7 +14,7 @@ router.get('/author', function(req, res) {
   res.render('author', { nombre: 'Alejandro', foto: '/images/bart2.gif', errors: null });
 });
 
-// Definiciòón de rutas de sesión
+// Definición de rutas de sesión
 router.get('/login', sessionController.new); // formulario login
 router.post('/login', sessionController.create); // crea sesión
 router.get('/logout', sessionController.destroy); // destruir sesión

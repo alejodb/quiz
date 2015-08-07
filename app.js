@@ -39,6 +39,22 @@ app.use(function(req, res, next) {
   next();
 });
 
+// Middleware para autologout
+app.use(function(req, res, next) {
+  var currenttime = new Date().getTime() / 1000;
+
+if(req.session.user) {
+  // si han pasado mas de 2 minutos desde la ultima actividad se elimina la sesion del usuario
+    if(currenttime > req.session.lasttransaction + 120) {
+      delete req.session.user;
+      delete req.session.lasttransaction;
+    } else { // sino se actualiza el ultimo momento de actividad
+      req.session.lasttransaction = currenttime;
+    }
+  }
+  next();
+});
+
 app.use('/', routes);
 
 // catch 404 and forward to error handler
