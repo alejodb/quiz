@@ -49,8 +49,9 @@ Quiz.hasMany(Comment);
 exports.Quiz = Quiz;
 exports.Comment = Comment;
 exports.Tema = Tema;
+exports.SequelizeBD = sequelize;
 
-sequelize.sync({force: true}).then(function() {
+sequelize.sync({force: false}).then(function() {
   Tema.count().then(function (count){
     if(count === 0) {
       Tema.create({ codigo: 'otro',
