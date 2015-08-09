@@ -25,7 +25,7 @@ exports.query = function (req, res, next) {
                         res.render('quizes/statistics.ejs', {
                           cantidadPreguntas: cantidadPreguntas,
                           cantidadComentarios: cantidadComentarios,
-                          promedioComentariosPregunta: promedioComentariosPregunta[0].promedio,
+                          promedioComentariosPregunta: promedioComentariosPregunta[0].promedio?promedioComentariosPregunta[0].promedio:0,
                           cantidadPreguntasSinComentarios: cantidadPreguntasSinComentarios[0].cantidad,
                           cantidadPreguntasConComentarios: cantidadPreguntasConComentarios[0].cantidad,
                           errors: null});
