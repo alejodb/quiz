@@ -13,7 +13,7 @@ exports.query = function (req, res, next) {
       models.Comment.count().then(
         function(cantidadComentarios) {
 
-          models.SequelizeBD.query("select avg(cantidad) as promedio from (select QuizId, count(*) as cantidad from Comments group by QuizId)").then(
+          models.SequelizeBD.query("select avg(cantidad) as promedio from (select QuizId, count(*) as cantidad from Comments group by QuizId) as resultado").then(
               function(promedioComentariosPregunta) {
 
                 models.SequelizeBD.query("select count(*) as cantidad from Quizzes where id not in (select QuizId from Comments)").then(
